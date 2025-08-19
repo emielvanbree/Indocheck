@@ -2,7 +2,10 @@
 <html lang="nl">
 <head>
   <meta charset="UTF-8">
-  <title>Indo Check</title>
+  <title>Indo Index Berekening</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async
+          src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
     body {
       font-family: 'Georgia', serif;
@@ -12,59 +15,29 @@
       margin: auto;
       padding: 30px;
       line-height: 1.6;
-      position: relative;
     }
-
-    /* Subtiele textuur-overlay met batik + bloem */
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-image: 
-        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" opacity="0.03"><text x="20" y="100" font-size="50" fill="%238E6D4E">✧</text></svg>'),
-        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" opacity="0.03"><circle cx="100" cy="100" r="80" stroke="%234B3A2C" stroke-width="2" fill="none"/></svg>');
-      background-repeat: repeat;
-      z-index: -1;
-    }
-
-    h1 {
+    h1, h2 {
       text-align: center;
       color: #2F2F2F;
-      margin-bottom: 30px;
     }
-
     fieldset {
       margin-bottom: 20px;
       border-radius: 10px;
       border: 1px solid #8E6D4E;
       padding: 15px 20px;
       background: rgba(255,255,255,0.8);
-      position: relative;
     }
-
     legend {
       font-weight: bold;
       color: #4B3A2C;
-      display: flex;
-      align-items: center;
-      gap: 8px;
     }
-
-    legend svg {
-      width: 22px;
-      height: 22px;
-      fill: #191970;
-    }
-
     label {
       display: block;
       margin: 6px 0;
-      color: #2F2F2F;
     }
-
     button {
-      display: block;
-      margin: 25px auto;
+      display: inline-block;
+      margin: 20px 10px;
       padding: 12px 24px;
       font-size: 16px;
       border-radius: 6px;
@@ -74,20 +47,15 @@
       cursor: pointer;
       transition: background 0.3s;
     }
-
     button:hover {
       background: #4B3A2C;
     }
-
     #result {
       text-align: center;
       font-size: 18px;
       margin-top: 20px;
       font-weight: bold;
-      color: #2F2F2F;
     }
-
-    /* Progress bar container */
     .progress-container {
       width: 100%;
       background-color: #ddd;
@@ -97,8 +65,6 @@
       overflow: hidden;
       border: 1px solid #4B3A2C;
     }
-
-    /* Progress bar fill */
     .progress-bar {
       height: 100%;
       width: 0%;
@@ -109,7 +75,6 @@
       font-weight: bold;
       transition: width 0.5s ease-in-out;
     }
-
     footer {
       margin-top: 40px;
       padding: 15px;
@@ -119,65 +84,84 @@
       border-radius: 8px;
       font-size: 14px;
     }
+    #formulaBox {
+      margin: 20px auto;
+      padding: 15px;
+      background: #fff;
+      border: 1px solid #8E6D4E;
+      border-radius: 8px;
+      max-width: 400px;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
-  <h1>Ben ik Indisch opgegroeid?</h1>
+  <h1>Indo Index Berekening</h1>
+  <h2>Hoe Indisch ben jij?</h2>
+
+  <div id="formulaBox">
+    <p>De berekening gaat volgens deze formule:</p>
+    <p>$$ I = 0.5B + 0.5C_w $$</p>
+    <small>waarbij B = genealogisch Indo-percentage en C<sub>w</sub> = cultuur-score uit de vragenlijst</small>
+  </div>
+
   <form id="indoForm">
     <fieldset>
-      <legend>
-        <svg viewBox="0 0 64 64"><path d="M32 2 L42 22 L62 24 L46 38 L50 58 L32 48 L14 58 L18 38 L2 24 L22 22 Z"/></svg>
-        🥘 Eten
-      </legend>
-      <label><input type="checkbox"> Sambal stond altijd op tafel.</label>
-      <label><input type="checkbox"> Rijst was vaker de basis dan aardappels.</label>
-      <label><input type="checkbox"> Grote schalen om te delen.</label>
-      <label><input type="checkbox"> Familiefeesten draaiden om Indisch eten.</label>
+      <legend>📜 Genealogie (ouders en grootouders)</legend>
+
+      <p><b>Ouders:</b></p>
+      <label><input type="radio" name="ouders" value="0"> Geen van mijn ouders is in Nederlands-Indië geboren</label>
+      <label><input type="radio" name="ouders" value="50"> Eén van mijn ouders is in Nederlands-Indië geboren</label>
+      <label><input type="radio" name="ouders" value="100"> Mijn beide ouders zijn in Nederlands-Indië geboren</label>
+
+      <p><b>Grootouders:</b></p>
+      <label><input type="radio" name="grootouders" value="0"> Geen van mijn grootouders is in Nederlands-Indië geboren</label>
+      <label><input type="radio" name="grootouders" value="25"> Eén van mijn grootouders is in Nederlands-Indië geboren</label>
+      <label><input type="radio" name="grootouders" value="50"> Mijn beide grootouders zijn in Nederlands-Indië geboren</label>
     </fieldset>
 
     <fieldset>
-      <legend>
-        <svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30"/></svg>
-        🗣️ Taal & woorden
-      </legend>
-      <label><input type="checkbox"> Indische/Maleise woorden thuis.</label>
-      <label><input type="checkbox"> Ouders/grootouders gebruikten Petjoh.</label>
-      <label><input type="checkbox"> Als kind woorden gekend die later niet “standaard NL” bleken.</label>
+      <legend>🥘 Eten</legend>
+      <label><input type="checkbox"> Sambal stond altijd op tafel</label>
+      <label><input type="checkbox"> Rijst was vaker de basis dan aardappels</label>
+      <label><input type="checkbox"> Grote schalen om te delen</label>
+      <label><input type="checkbox"> Familiefeesten draaiden om Indisch eten</label>
     </fieldset>
 
     <fieldset>
-      <legend>
-        <svg viewBox="0 0 64 64"><path d="M12 32 a20 20 0 0 1 40 0 a20 20 0 0 1 -40 0"/></svg>
-        👨‍👩‍👧‍👦 Familie & omgang
-      </legend>
-      <label><input type="checkbox"> Veel familie bij elkaar, ook verre neven/nichten.</label>
-      <label><input type="checkbox"> Respect voor ouderen sterk benadrukt.</label>
-      <label><input type="checkbox"> Altijd extra gekookt voor onverwachte gasten.</label>
+      <legend>🗣️ Taal & woorden</legend>
+      <label><input type="checkbox"> Indische/Maleise woorden thuis</label>
+      <label><input type="checkbox"> Ouders/grootouders gebruikten Petjoh</label>
+      <label><input type="checkbox"> Als kind woorden gekend die later niet “standaard NL” bleken</label>
     </fieldset>
 
     <fieldset>
-      <legend>
-        <svg viewBox="0 0 64 64"><rect x="8" y="8" width="48" height="48"/></svg>
-        💭 Normen & waarden
-      </legend>
-      <label><input type="checkbox"> “Doe maar gewoon, val niet op.”</label>
-      <label><input type="checkbox"> Harmonie belangrijker dan ruzie.</label>
-      <label><input type="checkbox"> Problemen binnenshuis houden.</label>
-      <label><input type="checkbox"> Niet klagen, gewoon doorgaan.</label>
+      <legend>👨‍👩‍👧‍👦 Familie & omgang</legend>
+      <label><input type="checkbox"> Veel familie bij elkaar, ook verre neven/nichten</label>
+      <label><input type="checkbox"> Respect voor ouderen sterk benadrukt</label>
+      <label><input type="checkbox"> Altijd extra gekookt voor onverwachte gasten</label>
     </fieldset>
 
     <fieldset>
-      <legend>
-        <svg viewBox="0 0 64 64"><polygon points="32,4 60,60 4,60"/></svg>
-        🌏 Cultuur & identiteit
-      </legend>
-      <label><input type="checkbox"> Verhalen over Indië gehoord.</label>
-      <label><input type="checkbox"> Gevoel van “tussen twee werelden.”</label>
-      <label><input type="checkbox"> Muziek als krontjong, gamelan of Indorock thuis aanwezig.</label>
-      <label><input type="checkbox"> Trots op Indische achtergrond, zoekt naar roots.</label>
+      <legend>💭 Normen & waarden</legend>
+      <label><input type="checkbox"> “Doe maar gewoon, val niet op”</label>
+      <label><input type="checkbox"> Harmonie belangrijker dan ruzie</label>
+      <label><input type="checkbox"> Problemen binnenshuis houden</label>
+      <label><input type="checkbox"> Niet klagen, gewoon doorgaan</label>
     </fieldset>
 
-    <button type="button" onclick="calculate()">Bereken mijn Indo-percentage</button>
+    <fieldset>
+      <legend>🌏 Cultuur & identiteit</legend>
+      <label><input type="checkbox"> Verhalen over Indië gehoord</label>
+      <label><input type="checkbox"> Gevoel van “tussen twee werelden”</label>
+      <label><input type="checkbox"> Muziek als krontjong, gamelan of Indorock thuis aanwezig</label>
+      <label><input type="checkbox"> Trots op Indische achtergrond, zoekt naar roots</label>
+    </fieldset>
+
+    <div style="text-align:center;">
+      <button type="button" onclick="calculate()">Bereken Indo-index</button>
+      <button type="button" onclick="explain()">Hoe werkt dit?</button>
+    </div>
   </form>
 
   <div class="progress-container">
@@ -187,28 +171,58 @@
   <div id="result"></div>
 
   <footer>
-    Indo Check © 2025 – Een warme blik op je roots
+    Indo Index © 2025 – Een warme blik op je roots
   </footer>
 
   <script>
     function calculate() {
-      const checkboxes = document.querySelectorAll('#indoForm input[type="checkbox"]');
-      const total = checkboxes.length;
-      let checked = 0;
-      checkboxes.forEach(cb => {
-        if (cb.checked) checked++;
+      // genealogie (bloedlijn)
+      let B = 0;
+      const ouders = document.querySelector('input[name="ouders"]:checked');
+      const grootouders = document.querySelector('input[name="grootouders"]:checked');
+      if (ouders) B += parseInt(ouders.value);
+      if (grootouders) B += parseInt(grootouders.value);
+      if (!ouders && !grootouders) B = 0;
+
+      if (B > 100) B = 100; // max 100%
+
+      // culturele vragen
+      const cultureQuestions = Array.from(document.querySelectorAll('#indoForm input[type="checkbox"]'))
+      const totalC = cultureQuestions.length;
+      let checkedC = 0;
+      cultureQuestions.forEach(cb => {
+        if (cb.checked) checkedC++;
       });
-      const percentage = Math.round((checked / total) * 100);
+      let C = totalC > 0 ? Math.round((checkedC / totalC) * 100) : 0;
 
-      // Update tekstresultaat
+      // indo-index
+      let I = Math.round(0.5 * B + 0.5 * C);
+
+      // resultaat tekst
       document.getElementById('result').innerHTML =
-        `Jij herkent je in <b>${checked}</b> van de <b>${total}</b> punten.<br>` +
-        `👉 Je bent voor <span style="color:#191970">${percentage}%</span> “Indo opgegroeid”.`;
+        `Genealogie (bloedlijn): <b>${B}%</b><br>` +
+        `Cultuur-score: <b>${C}%</b><br>` +
+        `👉 Jouw <b>Indo-Index</b> is: <span style="color:#191970">${I}%</span>`;
 
-      // Update progress bar
+      // progress bar
       const bar = document.getElementById('progressBar');
-      bar.style.width = percentage + '%';
-      bar.textContent = percentage + '%';
+      bar.style.width = I + '%';
+      bar.textContent = I + '%';
+    }
+
+    function explain() {
+      alert(
+        "De formule is:\n\n" +
+        "I = 0.5B + 0.5Cw\n\n" +
+        "waarbij:\n" +
+        "- B = genealogisch Indo-percentage (ouders/grootouders)\n" +
+        "- Cw = cultuur-score uit de vragenlijst\n\n" +
+        "👉 In Jip-en-Janneke taal:\n\n" +
+        "1. Je familie telt mee (ouders/grootouders).\n" +
+        "2. Hoe je bent opgegroeid telt mee (eten, taal, familie, verhalen).\n" +
+        "3. We nemen 50% van elk en rekenen dat samen uit.\n\n" +
+        "Zo krijg je jouw Indo-Index!"
+      );
     }
   </script>
 </body>
