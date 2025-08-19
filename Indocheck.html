@@ -16,7 +16,7 @@
       margin: auto;
       padding: 15px;
       line-height: 1.6;
-      font-size: 18px; /* standaard groter */
+      font-size: 18px;
     }
     h1, h2 {
       text-align: center;
@@ -45,8 +45,8 @@
     }
     label {
       display: block;
-      margin: 12px 0;
-      line-height: 1.5;
+      margin: 10px 0;
+      line-height: 1.4;
       font-size: 18px;
     }
     input[type="checkbox"],
@@ -116,24 +116,6 @@
       text-align: center;
       font-size: 16px;
     }
-
-    /* Extra voor kleine schermen */
-    @media (max-width: 600px) {
-      body {
-        font-size: 20px; /* nog groter op mobiel */
-      }
-      summary {
-        font-size: 20px;
-        padding: 14px;
-      }
-      label {
-        font-size: 20px;
-      }
-      button {
-        font-size: 20px;
-        padding: 16px;
-      }
-    }
   </style>
 </head>
 <body>
@@ -143,12 +125,12 @@
   <div id="formulaBox">
     <p>De berekening gaat volgens deze formule:</p>
     <p>$$ I = 0.5B + 0.5C_w $$</p>
-    <small>waarbij B = genealogisch Indo-percentage en C<sub>w</sub> = cultuur-score uit de vragenlijst</small>
+    <small>waarbij B = genealogisch Indo-percentage (hoogste score uit ouders, grootouders of overgrootouders) en C<sub>w</sub> = cultuur-score uit de vragenlijst</small>
   </div>
 
   <form id="indoForm">
-    <details>
-      <summary>📜 Genealogie (ouders en grootouders)</summary>
+    <details open>
+      <summary>📜 Genealogie</summary>
       <div class="content">
         <p><b>Ouders:</b></p>
         <label><input type="radio" name="ouders" value="0"> Geen van mijn ouders is in Nederlands-Indië geboren</label>
@@ -158,7 +140,20 @@
         <p><b>Grootouders:</b></p>
         <label><input type="radio" name="grootouders" value="0"> Geen van mijn grootouders is in Nederlands-Indië geboren</label>
         <label><input type="radio" name="grootouders" value="25"> Eén van mijn grootouders is in Nederlands-Indië geboren</label>
-        <label><input type="radio" name="grootouders" value="50"> Mijn beide grootouders zijn in Nederlands-Indië geboren</label>
+        <label><input type="radio" name="grootouders" value="50"> Twee van mijn grootouders zijn in Nederlands-Indië geboren</label>
+        <label><input type="radio" name="grootouders" value="75"> Drie van mijn grootouders zijn in Nederlands-Indië geboren</label>
+        <label><input type="radio" name="grootouders" value="100"> Vier van mijn grootouders zijn in Nederlands-Indië geboren</label>
+
+        <p><b>Overgrootouders:</b></p>
+        <label><input type="radio" name="overgrootouders" value="0"> Geen van mijn overgrootouders is in Nederlands-Indië geboren</label>
+        <label><input type="radio" name="overgrootouders" value="12.5"> Eén van mijn overgrootouders is in Nederlands-Indië geboren</label>
+        <label><input type="radio" name="overgrootouders" value="25"> Twee van mijn overgrootouders zijn in Nederlands-Indië geboren</label>
+        <label><input type="radio" name="overgrootouders" value="37.5"> Drie van mijn overgrootouders zijn in Nederlands-Indië geboren</label>
+        <label><input type="radio" name="overgrootouders" value="50"> Vier van mijn overgrootouders zijn in Nederlands-Indië geboren</label>
+        <label><input type="radio" name="overgrootouders" value="62.5"> Vijf van mijn overgrootouders zijn in Nederlands-Indië geboren</label>
+        <label><input type="radio" name="overgrootouders" value="75"> Zes van mijn overgrootouders zijn in Nederlands-Indië geboren</label>
+        <label><input type="radio" name="overgrootouders" value="87.5"> Zeven van mijn overgrootouders zijn in Nederlands-Indië geboren</label>
+        <label><input type="radio" name="overgrootouders" value="100"> Acht van mijn overgrootouders zijn in Nederlands-Indië geboren</label>
       </div>
     </details>
 
@@ -228,14 +223,16 @@
 
   <script>
     function calculate() {
-      // genealogie (bloedlijn)
-      let B = 0;
+      // genealogie (max van de drie groepen)
       const ouders = document.querySelector('input[name="ouders"]:checked');
       const grootouders = document.querySelector('input[name="grootouders"]:checked');
-      if (ouders) B += parseInt(ouders.value);
-      if (grootouders) B += parseInt(grootouders.value);
-      if (!ouders && !grootouders) B = 0;
-      if (B > 100) B = 100;
+      const overgrootouders = document.querySelector('input[name="overgrootouders"]:checked');
+
+      const valOuders = ouders ? parseFloat(ouders.value) : 0;
+      const valGrootouders = grootouders ? parseFloat(grootouders.value) : 0;
+      const valOvergrootouders = overgrootouders ? parseFloat(overgrootouders.value) : 0;
+
+      let B = Math.max(valOuders, valGrootouders, valOvergrootouders);
 
       // culturele vragen
       const cultureQuestions = Array.from(document.querySelectorAll('#indoForm input[type="checkbox"]'));
@@ -264,13 +261,13 @@
         "De formule is:\n\n" +
         "I = 0.5B + 0.5Cw\n\n" +
         "waarbij:\n" +
-        "- B = genealogisch Indo-percentage (ouders/grootouders)\n" +
+        "- B = genealogisch Indo-percentage (het hoogste van ouders, grootouders of overgrootouders)\n" +
         "- Cw = cultuur-score uit de vragenlijst\n\n" +
         "👉 In Jip-en-Janneke taal:\n\n" +
-        "1. Je familie telt mee (ouders/grootouders).\n" +
-        "2. Hoe je bent opgegroeid telt mee (eten, taal, familie, verhalen).\n" +
-        "3. We nemen 50% van elk en rekenen dat samen uit.\n\n" +
-        "Zo krijg je jouw Indo-Index!"
+        "1. We kijken naar je ouders, grootouders en overgrootouders.\n" +
+        "   De hoogste score daarvan telt als je bloedlijn.\n" +
+        "2. Hoe je bent opgegroeid (eten, taal, verhalen) telt voor de andere helft.\n" +
+        "3. Samen vormen ze jouw Indo-Index!"
       );
     }
   </script>
