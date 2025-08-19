@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <title>Indo Check</title>
+  <style>
+    body {
+      font-family: 'Georgia', serif;
+      background-color: #F5F5DC;
+      color: #2F2F2F;
+      max-width: 900px;
+      margin: auto;
+      padding: 30px;
+      line-height: 1.6;
+      position: relative;
+    }
+
+    /* Subtiele textuur-overlay met batik + bloem */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: 
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" opacity="0.03"><text x="20" y="100" font-size="50" fill="%238E6D4E">✧</text></svg>'),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" opacity="0.03"><circle cx="100" cy="100" r="80" stroke="%234B3A2C" stroke-width="2" fill="none"/></svg>');
+      background-repeat: repeat;
+      z-index: -1;
+    }
+
+    h1 {
+      text-align: center;
+      color: #2F2F2F;
+      margin-bottom: 30px;
+    }
+
+    fieldset {
+      margin-bottom: 20px;
+      border-radius: 10px;
+      border: 1px solid #8E6D4E;
+      padding: 15px 20px;
+      background: rgba(255,255,255,0.8);
+      position: relative;
+    }
+
+    legend {
+      font-weight: bold;
+      color: #4B3A2C;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    legend svg {
+      width: 22px;
+      height: 22px;
+      fill: #191970;
+    }
+
+    label {
+      display: block;
+      margin: 6px 0;
+      color: #2F2F2F;
+    }
+
+    button {
+      display: block;
+      margin: 25px auto;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: none;
+      background: #8E6D4E;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #4B3A2C;
+    }
+
+    #result {
+      text-align: center;
+      font-size: 18px;
+      margin-top: 20px;
+      font-weight: bold;
+      color: #2F2F2F;
+    }
+
+    /* Progress bar container */
+    .progress-container {
+      width: 100%;
+      background-color: #ddd;
+      border-radius: 20px;
+      margin: 20px auto;
+      height: 25px;
+      overflow: hidden;
+      border: 1px solid #4B3A2C;
+    }
+
+    /* Progress bar fill */
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background-color: #191970;
+      text-align: center;
+      line-height: 25px;
+      color: white;
+      font-weight: bold;
+      transition: width 0.5s ease-in-out;
+    }
+
+    footer {
+      margin-top: 40px;
+      padding: 15px;
+      text-align: center;
+      background: #4B3A2C;
+      color: #F5F5DC;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Ben ik Indisch opgegroeid?</h1>
+  <form id="indoForm">
+    <fieldset>
+      <legend>
+        <svg viewBox="0 0 64 64"><path d="M32 2 L42 22 L62 24 L46 38 L50 58 L32 48 L14 58 L18 38 L2 24 L22 22 Z"/></svg>
+        🥘 Eten
+      </legend>
+      <label><input type="checkbox"> Sambal stond altijd op tafel.</label>
+      <label><input type="checkbox"> Rijst was vaker de basis dan aardappels.</label>
+      <label><input type="checkbox"> Grote schalen om te delen.</label>
+      <label><input type="checkbox"> Familiefeesten draaiden om Indisch eten.</label>
+    </fieldset>
+
+    <fieldset>
+      <legend>
+        <svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30"/></svg>
+        🗣️ Taal & woorden
+      </legend>
+      <label><input type="checkbox"> Indische/Maleise woorden thuis.</label>
+      <label><input type="checkbox"> Ouders/grootouders gebruikten Petjoh.</label>
+      <label><input type="checkbox"> Als kind woorden gekend die later niet “standaard NL” bleken.</label>
+    </fieldset>
+
+    <fieldset>
+      <legend>
+        <svg viewBox="0 0 64 64"><path d="M12 32 a20 20 0 0 1 40 0 a20 20 0 0 1 -40 0"/></svg>
+        👨‍👩‍👧‍👦 Familie & omgang
+      </legend>
+      <label><input type="checkbox"> Veel familie bij elkaar, ook verre neven/nichten.</label>
+      <label><input type="checkbox"> Respect voor ouderen sterk benadrukt.</label>
+      <label><input type="checkbox"> Altijd extra gekookt voor onverwachte gasten.</label>
+    </fieldset>
+
+    <fieldset>
+      <legend>
+        <svg viewBox="0 0 64 64"><rect x="8" y="8" width="48" height="48"/></svg>
+        💭 Normen & waarden
+      </legend>
+      <label><input type="checkbox"> “Doe maar gewoon, val niet op.”</label>
+      <label><input type="checkbox"> Harmonie belangrijker dan ruzie.</label>
+      <label><input type="checkbox"> Problemen binnenshuis houden.</label>
+      <label><input type="checkbox"> Niet klagen, gewoon doorgaan.</label>
+    </fieldset>
+
+    <fieldset>
+      <legend>
+        <svg viewBox="0 0 64 64"><polygon points="32,4 60,60 4,60"/></svg>
+        🌏 Cultuur & identiteit
+      </legend>
+      <label><input type="checkbox"> Verhalen over Indië gehoord.</label>
+      <label><input type="checkbox"> Gevoel van “tussen twee werelden.”</label>
+      <label><input type="checkbox"> Muziek als krontjong, gamelan of Indorock thuis aanwezig.</label>
+      <label><input type="checkbox"> Trots op Indische achtergrond, zoekt naar roots.</label>
+    </fieldset>
+
+    <button type="button" onclick="calculate()">Bereken mijn Indo-percentage</button>
+  </form>
+
+  <div class="progress-container">
+    <div id="progressBar" class="progress-bar">0%</div>
+  </div>
+
+  <div id="result"></div>
+
+  <footer>
+    Indo Check © 2025 – Een warme blik op je roots
+  </footer>
+
+  <script>
+    function calculate() {
+      const checkboxes = document.querySelectorAll('#indoForm input[type="checkbox"]');
+      const total = checkboxes.length;
+      let checked = 0;
+      checkboxes.forEach(cb => {
+        if (cb.checked) checked++;
+      });
+      const percentage = Math.round((checked / total) * 100);
+
+      // Update tekstresultaat
+      document.getElementById('result').innerHTML =
+        `Jij herkent je in <b>${checked}</b> van de <b>${total}</b> punten.<br>` +
+        `👉 Je bent voor <span style="color:#191970">${percentage}%</span> “Indo opgegroeid”.`;
+
+      // Update progress bar
+      const bar = document.getElementById('progressBar');
+      bar.style.width = percentage + '%';
+      bar.textContent = percentage + '%';
+    }
+  </script>
+</body>
+</html>
